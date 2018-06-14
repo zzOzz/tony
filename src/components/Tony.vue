@@ -17,7 +17,13 @@ const debug = require('debug')('tony')
 const speed = 0.3
 // const armOrigin = '10% 10% 30%'
 // const armRotation = '90'
-let timeline = new TimelineMax()
+let timeline = new TimelineMax({
+  repeat: 0,
+  onComplete: function () {
+    console.log('complete')
+    this.restart()
+  }
+})
 window.tl = timeline
 export default {
   name: 'Tony',
@@ -54,6 +60,11 @@ export default {
     }
   },
   methods: {
+    smallMoves: function () {
+      timeline.to('#tony-body', speed * 3, {x: 0, y: 0, rotation: 0, scaleX: 1.05, scaleY: 1.05, scaleZ: 1, transformOrigin: 'center center', ease: Bounce.easeOut})
+        .to('#tony-body', speed * 2, {x: 0, y: 0, rotation: -5, scaleX: 1, scaleY: 1, scaleZ: 1, transformOrigin: 'center center', ease: Expo.easeOut})
+        .to('#tony-body', speed * 2, {x: 0, y: 0, rotation: 0, scaleX: 1, scaleY: 1, scaleZ: 1, transformOrigin: 'center center', ease: Expo.easeOut})
+    },
     hideEyes: function (evt) {
       debug('hide', evt)
       TweenMax.to('#left-arm', 1, {tonySVG: '#left-arm', shapeIndex: 9, ease: Expo.easeOut})
@@ -126,6 +137,9 @@ export default {
         let svg = parser.parseFromString(response.data, 'image/svg+xml')
         document.getElementById('tony').appendChild(svg.getElementsByTagName('svg')[0])
         this.showEyes()
+        this.smallMoves()
+        // TweenMax.to('#Calque_1', speed, {rotation: 0, x: 0, y: 0, scaleX: 2, scaleY: 2})
+        TweenMax.to('#Calque_1', 1.5, { attr: { viewBox: '0 0 400 400' }, scaleX: 1, scaleY: 1 })
       })
       .catch((err) => {
         debug('error', err)
@@ -153,7 +167,7 @@ li {
 a {
   color: #42b983;
 }
-.tony {
-    width: 50vw;
+#tony {
+  /* width: 50vw; */
 }
 </style>
