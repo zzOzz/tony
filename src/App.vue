@@ -1,12 +1,14 @@
 <template>
   <div id="app">
     <input type="range" min="0" max="2" step="0.01" v-model.number="slider">
-    <Tony msg="Click" :xfactor="slider"/>
+    <input type="password" @focus="hidePassword" @blur="hidePassword"/>
+    <Tony msg="Click" :xfactor="slider" :hide="hide"/>
   </div>
 </template>
 
 <script>
 import Tony from './components/Tony.vue'
+const debug = require('debug')('tony')
 
 export default {
   name: 'app',
@@ -15,7 +17,14 @@ export default {
   },
   data () {
     return {
-      slider: 1.1
+      slider: 1.1,
+      hide: false
+    }
+  },
+  methods: {
+    hidePassword: function (evt) {
+      debug('cool')
+      this.hide = !this.hide
     }
   }
 }
