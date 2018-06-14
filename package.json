@@ -4,10 +4,13 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "cp -f src/lib/TonySVGPlugin.js node_modules/gsap/ && vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "axios": "^0.18.0",
+    "debug": "^3.1.0",
+    "gsap": "^1.20.4",
     "vue": "^2.5.16"
   },
   "devDependencies": {

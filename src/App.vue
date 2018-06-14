@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <Tony msg="Click"/>
+    <input type="range" min="0" max="2" step="0.01" v-model.number="slider">
+    <Tony msg="Click" :xfactor="slider"/>
   </div>
 </template>
 
@@ -11,6 +12,11 @@ export default {
   name: 'app',
   components: {
     Tony
+  },
+  data () {
+    return {
+      slider: 1.1
+    }
   }
 }
 </script>
