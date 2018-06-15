@@ -2,7 +2,10 @@
     <!-- <h1 @click='move'>{{ msg }}</h1>
     <button @click='hideEyes'>#hide {{ msg }}</button>
     <button @click='showEyes'>#show {{ msg }}</button> -->
-    <div id="tony"/>
+    <!-- <div id="tony"/> -->
+    <div id="tony">
+      <!-- <svg :src="require('../../public/img/tony.svg')"/> -->
+    </div>
 </template>
 
 <script>
@@ -141,6 +144,7 @@ export default {
         debug(response)
         let parser = new DOMParser()
         let svg = parser.parseFromString(response.data, 'image/svg+xml')
+        // debug(svg.getElementsByTagName('svg'))
         document.getElementById('tony').appendChild(svg.getElementsByTagName('svg')[0])
         this.closeArms()
         this.smallMoves()
