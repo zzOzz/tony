@@ -37,12 +37,15 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import Buefy from 'buefy'
 import Tony from './components/Tony.vue'
+import Buefy from 'buefy'
 const debug = require('debug')('tony')
-Vue.use(Buefy, { defaultIconPack: 'mdi' })
 export default {
+  install: (Vue, options = {}) => {
+    // Options
+    console.log('install')
+    Vue.use(Buefy, { defaultIconPack: 'mdi' })
+  },
   name: 'app',
   components: {
     Tony
