@@ -1,10 +1,8 @@
 <template>
-  <div class="hello">
     <!-- <h1 @click='move'>{{ msg }}</h1>
     <button @click='hideEyes'>#hide {{ msg }}</button>
     <button @click='showEyes'>#show {{ msg }}</button> -->
     <div id="tony"/>
-  </div>
 </template>
 
 <script>
@@ -19,6 +17,7 @@ const speed = 0.3
 // const armRotation = '90'
 let timeline = new TimelineMax({
   repeat: 0,
+  yoyo: true,
   onComplete: function () {
     console.log('complete')
     this.restart()
@@ -61,27 +60,34 @@ export default {
   },
   methods: {
     smallMoves: function () {
-      timeline.to('#tony-body', speed * 3, {x: 0, y: 0, rotation: 0, scaleX: 1.05, scaleY: 1.05, scaleZ: 1, transformOrigin: 'center center', ease: Bounce.easeOut})
+      // TweenMax.to('#left-arm', speed * 2, {x: 0, y: 0, rotation: 10, scaleX: 1, scaleY: 1, scaleZ: 1, transformOrigin: 'center center', ease: Expo.easeOut})
+      timeline.to('#left-hand', speed * 4, {rotation: 30, x: -10, transformOrigin: 'center center', ease: Elastic.easeIn.config(1, 0.75)})
+        .to('#tony-body', speed * 3, {x: 0, y: 0, rotation: 0, scaleX: 1.05, scaleY: 1.05, scaleZ: 1, transformOrigin: 'center center', ease: Bounce.easeOut}, -1)
         .to('#tony-body', speed * 2, {x: 0, y: 0, rotation: -5, scaleX: 1, scaleY: 1, scaleZ: 1, transformOrigin: 'center center', ease: Expo.easeOut})
         .to('#tony-body', speed * 2, {x: 0, y: 0, rotation: 0, scaleX: 1, scaleY: 1, scaleZ: 1, transformOrigin: 'center center', ease: Expo.easeOut})
+        .to('#left-hand', speed * 4, {rotation: 0, x: 0, transformOrigin: 'center center', ease: Elastic.easeIn.config(1, 0.75)})
     },
-    hideEyes: function (evt) {
-      debug('hide', evt)
+    openArms: function () {
       TweenMax.to('#left-arm', 1, {tonySVG: '#left-arm', shapeIndex: 9, ease: Expo.easeOut})
       TweenMax.to('#right-arm', 1, {tonySVG: '#right-arm', shapeIndex: 9, ease: Expo.easeOut})
       TweenMax.to('#left-hand', speed, {x: 0, y: 0, rotation: 0, scaleX: 1, scaleY: 1})
       TweenMax.to('#right-hand', speed, {x: 0, y: 0, rotation: 0, scaleX: 1, scaleY: 1})
-
+    },
+    closeArms: function () {
+      TweenMax.to('#left-arm', 1, {tonySVG: '#left-arm-hide', shapeIndex: 9, ease: Expo.easeOut})
+      TweenMax.to('#right-arm', 1, {tonySVG: '#right-arm-hide', shapeIndex: 9, ease: Expo.easeOut})
+      TweenMax.to('#left-hand', speed * 2, {x: -15, y: 15, rotation: 40, scaleX: 1, scaleY: 1, transformOrigin: 'center center'})
+      TweenMax.to('#right-hand', speed * 2, {x: 35, y: 30, rotation: -80, scaleX: 1, scaleY: 1})
+    },
+    hideEyes: function (evt) {
+      debug('hide', evt)
+      this.openArms()
       TweenMax.to('#band', speed, {x: -2 * this.factor, y: 23, rotation: -5 * this.factor, ease: Bounce.easeOut, scaleY: 2, scaleX: 1.1})
       // TweenMax.to('#left-arm', 1, {rotationZ: armRotation, transformOrigin: armOrigin})
     },
     showEyes: function (evt) {
       debug('hide', evt)
-      TweenMax.to('#left-arm', 1, {tonySVG: '#left-arm-hide', shapeIndex: 9, ease: Expo.easeOut})
-      TweenMax.to('#right-arm', 1, {tonySVG: '#right-arm-hide', shapeIndex: 9, ease: Expo.easeOut})
-      TweenMax.to('#left-hand', speed * 2, {x: -35, y: -15, rotation: 80, scaleX: 1, scaleY: 1})
-      TweenMax.to('#right-hand', speed * 2, {x: 35, y: 30, rotation: -80, scaleX: 1, scaleY: 1})
-
+      this.closeArms()
       TweenMax.to('#band', speed * 3, {x: 0, y: 0, rotation: 0, scaleX: 1, scaleY: 1, ease: Elastic.easeOut})
       // TweenMax.to('#left-arm', 1, {rotationZ: 0, transformOrigin: armOrigin})
     },
@@ -136,7 +142,7 @@ export default {
         let parser = new DOMParser()
         let svg = parser.parseFromString(response.data, 'image/svg+xml')
         document.getElementById('tony').appendChild(svg.getElementsByTagName('svg')[0])
-        this.showEyes()
+        this.closeArms()
         this.smallMoves()
         // TweenMax.to('#Calque_1', speed, {rotation: 0, x: 0, y: 0, scaleX: 2, scaleY: 2})
         TweenMax.to('#Calque_1', 1.5, { attr: { viewBox: '0 0 400 400' }, scaleX: 1, scaleY: 1 })

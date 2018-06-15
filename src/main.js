@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import Buefy from 'buefy'
-import 'buefy/lib/buefy.css'
+// import 'buefy/lib/buefy.css'
 Vue.use(Buefy, { defaultIconPack: 'mdi' })
 Vue.config.productionTip = false
 
