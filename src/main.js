@@ -1,12 +1,12 @@
 import Vue from 'vue'
-import App from './App.vue'
+import { default as TonyLogin } from './App.vue'
 // import 'buefy/lib/buefy.css'
 
-Vue.use(App)
-Vue.config.productionTip = false
+Vue.use(TonyLogin)
+Vue.config.productionTip = true
 
 new Vue({
-  render: h => h(App)
+  render: h => h(TonyLogin)
 }).$mount('#app')
 
-export default App
+export default TonyLogin

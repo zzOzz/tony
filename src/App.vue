@@ -46,7 +46,7 @@ export default {
     console.log('install')
     Vue.use(Buefy, { defaultIconPack: 'mdi' })
   },
-  name: 'app',
+  name: 'tony-login',
   components: {
     Tony
   },

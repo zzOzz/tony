@@ -7,7 +7,7 @@
     "build": "cp -f src/lib/TonySVGPlugin.js node_modules/gsap/ && vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
-  "main": "src/main.js",
+  "main": "src/index.js",
   "dependencies": {
     "axios": "^0.18.0",
     "buefy": "^0.6.6",
