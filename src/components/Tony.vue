@@ -3,7 +3,7 @@
     <button @click='hideEyes'>#hide {{ msg }}</button>
     <button @click='showEyes'>#show {{ msg }}</button> -->
     <!-- <div id="tony"/> -->
-    <div id="tony">
+    <div id="tony" @click='move'>
       <!-- <svg :src="require('../../public/img/tony.svg')"/> -->
     </div>
 </template>
@@ -30,7 +30,7 @@ window.tl = timeline
 export default {
   name: 'Tony',
   props: {
-    msg: String,
+    svgURL: String,
     hide: {
       type: Boolean,
       default: false
@@ -100,9 +100,15 @@ export default {
       // let bouche = document.querySelector('#big-mouth')
       let boucheOh = document.querySelector('#small-mouth')
       debug('display Oh:', boucheOh.style.mouthType)
-      window.TweenMax = TweenMax
-      if (boucheOh.style.mouthType !== 'small') {
+      // window.TweenMax = TweenMax
+      if (boucheOh.style.rotateLogo !== true) {
+        boucheOh.style.rotateLogo = true
         TweenMax.to(logoUdl, 1, {rotation: 720, transformOrigin: 'center center'})
+      } else {
+        boucheOh.style.rotateLogo = false
+        TweenMax.to(logoUdl, 1, {rotation: 0, transformOrigin: 'center center'})
+      }
+      if (boucheOh.style.mouthType !== 'small') {
         // TweenMax.to('#big-mouth-in', speed, {tonySVG: '#small-mouth-in'})
         // TweenMax.to('#big-mouth-out', speed, {tonySVG: '#small-mouth-out'})
         // TweenMax.to('#face-in', speed, {tonySVG: '#reverse-face-in'})
@@ -137,9 +143,10 @@ export default {
     }
   },
   mounted () {
-    localStorage.debug = 'tony'
+    // localStorage.debug = 'tony'
     debug('mounted')
-    axios.get('/img/tony.svg')
+    // axios.get('/img/tony.svg')
+    axios.get(this.svgURL)
       .then((response) => {
         debug(response)
         let parser = new DOMParser()

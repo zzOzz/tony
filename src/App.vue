@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="card container">
-    <Tony msg="Click" :xfactor="slider" :hide="hide" class="card-image"/>
+    <Tony :svgURL="svgURL" :xfactor="slider" :hide="hide" class="card-image"/>
     <section class="card-content">
       <b-field>
       <b-autocomplete
@@ -30,8 +30,10 @@
             password-reveal @focus="hidePassword" @blur="hidePassword" v-model="password">
         </b-input>
       </b-field>
+      <div v-if='false'>
       <input type="range" min="0" max="2" step="0.01" v-model.number="slider">
       {{slider}}
+      </div>
     </section>
   </div>
 </template>
@@ -40,10 +42,15 @@
 import Tony from './components/Tony.vue'
 import Buefy from 'buefy'
 const debug = require('debug')('tony')
+let config = {
+  svgURL: '/img/tony.svg'
+}
+const setOptions = (options) => { config = options }
 export default {
   install: (Vue, options = {}) => {
     // Options
-    console.log('install')
+    setOptions(options)
+    debug('install', options, config)
     Vue.use(Buefy, { defaultIconPack: 'mdi' })
   },
   name: 'tony-login',
@@ -56,14 +63,31 @@ export default {
       hide: false,
       email: '',
       password: '',
-      mailDomains: [
-        'universite-lyon.fr',
-        'univ-lyon.org'
-      ],
       selected: ''
     }
   },
+  props: {
+    mailDomains: {
+      type: Array,
+      default: () => [
+        'universite-lyon.fr',
+        'persee.fr'
+      ]
+    },
+    value: {
+      type: Object,
+      default: () => {
+        return {
+          email: '',
+          password: ''
+        }
+      }
+    }
+  },
   computed: {
+    svgURL () {
+      return config.svgURL
+    },
     filteredDataArray () {
       let returnedArray = []
       this.mailDomains.forEach((domain) => {
@@ -96,6 +120,10 @@ export default {
     email: function (newVal, oldVal) { // watch it
       debug(this.email, this.email.length)
       this.slider = 1.8 - (this.email.length) * 0.05
+      this.$emit('input', { email: this.email, password: this.password })
+    },
+    password: function (newVal, oldVal) { // watch it
+      this.$emit('input', { email: this.email, password: this.password })
     }
   }
 }
